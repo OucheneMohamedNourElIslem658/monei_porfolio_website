@@ -10,10 +10,8 @@ class Project {
     required this.techs, 
     required this.title, 
     required this.description,
-    required this.status
   });
 
   final String techs, title, description;
   final String? imageURL;
-  final ProjectStatus status; 
 }

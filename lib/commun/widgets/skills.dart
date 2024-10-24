@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:monei_portfolio/commun/constents/size_status.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
+import '/commun/constents/size_status.dart';
 import '/commun/constents/colors.dart';
 import '/commun/constents/text_styles.dart';
 
@@ -22,52 +25,105 @@ class Skills extends StatelessWidget {
   }
 }
 
-class _SkillsMedium extends StatelessWidget {
+class _SkillsMedium extends StatefulWidget {
   const _SkillsMedium();
 
   @override
+  State<_SkillsMedium> createState() => _SkillsMediumState();
+}
+
+class _SkillsMediumState extends State<_SkillsMedium> {
+  double target = 0;
+  @override
   Widget build(BuildContext context) {
-    return const Wrap(
-      spacing: 15,
-      runSpacing: 15,
-      children: [
-        LanguagesCategory(),
-        FrameworksCategory(),
-        ServicesCategory(),
-        ToolsCategory(),
-        OtherCategory(),
-      ],
+    final screenSize = MediaQuery.of(context).size;
+    return VisibilityDetector(
+      key: GlobalKey(),
+      onVisibilityChanged: (info) {
+        final animateWidget = ((info.visibleFraction > 0.5 && target == 0) || info.visibleFraction * info.size.height > screenSize.height/2) && target == 0;
+        if (animateWidget) {
+          setState(() {
+            target = 1;
+          });
+        }
+      },
+      child: Wrap(
+        spacing: 15,
+        runSpacing: 15,
+        children: [
+          const LanguagesCategory(),
+          const FrameworksCategory(),
+          const ServicesCategory(),
+          const ToolsCategory(),
+          const OtherCategory(),
+        ]
+        .animate(interval: 200.milliseconds).move().fade()
+      ).animate(target: target).fade(duration: Duration.zero),
     );
   }
 }
 
-class _SkillsLarge extends StatelessWidget {
+class _SkillsLarge extends StatefulWidget {
   const _SkillsLarge();
 
   @override
+  State<_SkillsLarge> createState() => _SkillsLargeState();
+}
+
+class _SkillsLargeState extends State<_SkillsLarge> {
+  double target = 0;
+  @override
   Widget build(BuildContext context) {
-    return const Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        LanguagesCategory(),
-        SizedBox(width: 15),
-        Column(
-          children: [
-            FrameworksCategory(),
-            SizedBox(height: 15),
-            OtherCategory(),
-          ],
-        ),
-        SizedBox(width: 15),
-        Column(
-          children: [
-            ServicesCategory(),
-            SizedBox(height: 15),
-            ToolsCategory(),
-          ],
-        )
-      ],
+    return VisibilityDetector(
+      key: GlobalKey(),
+      onVisibilityChanged: (info) {
+        if (info.visibleFraction > 0.5 && target == 0) {
+          setState(() {
+            target = 1;
+          });
+        }
+      },
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const LanguagesCategory()
+            .animate(target: target)
+            .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1))
+            .fade(),
+          const SizedBox(width: 15),
+          Column(
+            children: [
+              const FrameworksCategory()
+                .animate(target: target)
+                .then(delay: 200.milliseconds)
+                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1))
+                .fade(),
+              const SizedBox(height: 15),
+              const OtherCategory()
+                .animate(target: target)
+                .then(delay: 400.milliseconds)
+                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1))
+                .fade(),
+            ],
+          ),
+          const SizedBox(width: 15),
+          Column(
+            children: [
+              const ServicesCategory()
+                .animate(target: target)
+                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1))
+                .fade(),
+              const SizedBox(height: 15),
+              const ToolsCategory()
+                .animate(target: target)
+                .then(delay: 200.milliseconds)
+                .scale(begin: const Offset(0.9, 0.9), end: const Offset(1, 1))
+                .fade(),
+            ],
+          )
+        ],
+      ),
     );
   }
 }
@@ -79,9 +135,21 @@ class LanguagesCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SkillCategory(
-      title: 'Languages',
-      skills: ['Dart', 'Go', 'SQL', 'JavaScript', 'C', 'Python', 'Java'],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("about me").collection("skills").doc("languages").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        final languages = info["languages"] as List<dynamic>;
+
+        return SkillCategory(
+          title: snapshot.data!.id,
+          skills: languages,
+        );
+      }
     );
   }
 }
@@ -93,9 +161,21 @@ class FrameworksCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SkillCategory(
-      title: 'Frameworks',
-      skills: ['Flutter', 'GetX', 'Cobra', 'Express'],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("about me").collection("skills").doc("frameworks").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        final frameworks = info["framworks"] as List<dynamic>;
+
+        return SkillCategory(
+          title: snapshot.data!.id,
+          skills: frameworks,
+        );
+      }
     );
   }
 }
@@ -107,9 +187,21 @@ class OtherCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SkillCategory(
-      title: 'Other',
-      skills: ['Docker', 'GCP', 'Render'],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("about me").collection("skills").doc("other").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        final other = info["Other"] as List<dynamic>;
+
+        return SkillCategory(
+          title: snapshot.data!.id,
+          skills: other,
+        );
+      }
     );
   }
 }
@@ -121,9 +213,21 @@ class ServicesCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SkillCategory(
-      title: 'Databases & Services',
-      skills: ['MySQL', 'PostgreSQL', 'Firebase'],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("about me").collection("skills").doc("databases & services").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        final services = info["Databases & Services"] as List<dynamic>;
+
+        return SkillCategory(
+          title: snapshot.data!.id,
+          skills: services,
+        );
+      }
     );
   }
 }
@@ -135,9 +239,21 @@ class ToolsCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SkillCategory(
-      title: 'Tools',
-      skills: ['VSCode', 'AndroidStudio', 'Git', 'Github', 'Linux'],
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("about me").collection("skills").doc("tools").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        final services = info["Tools"] as List<dynamic>;
+
+        return SkillCategory(
+          title: snapshot.data!.id,
+          skills: services,
+        );
+      }
     );
   }
 }
@@ -150,7 +266,7 @@ class SkillCategory extends StatelessWidget {
   });
 
   final String title;
-  final List<String> skills;
+  final List<dynamic> skills;
 
   @override
   Widget build(BuildContext context) {

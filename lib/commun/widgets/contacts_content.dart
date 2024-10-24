@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:monei_portfolio/contacts/widgets/contact_form.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
+import 'package:monei_portfolio/contacts/widgets/contact_form.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import '/commun/constents/size_status.dart';
 import '/commun/widgets/contacts_card.dart';
 import '/commun/widgets/contacts_text.dart';
@@ -98,18 +100,34 @@ class ContactsContent extends StatelessWidget {
   }
 }
 
-class ContactsCards extends StatelessWidget {
+class ContactsCards extends StatefulWidget {
   const ContactsCards({super.key});
 
   @override
+  State<ContactsCards> createState() => _ContactsCardsState();
+}
+
+class _ContactsCardsState extends State<ContactsCards> {
+  double target = 0;
+  @override
   Widget build(BuildContext context) {
-    return const Wrap(
-      spacing: 15,
-      runSpacing: 15,
-      children: [
-        ContactsCard(),
-        SupportCard(),
-      ],
+    return VisibilityDetector(
+      key: GlobalKey(),
+      onVisibilityChanged: (info) {
+        if (info.visibleFraction > 0.5 && target == 0) {
+          setState(() {
+            target = 1;
+          });
+        }
+      },
+      child: Wrap(
+        spacing: 15,
+        runSpacing: 15,
+        children: [
+          const ContactsCard(),
+          const SupportCard(),
+        ].animate(interval: 200.milliseconds).fade().move(),
+      ).animate(target: target).fade(duration: Duration.zero),
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
 import '/commun/constents/colors.dart';

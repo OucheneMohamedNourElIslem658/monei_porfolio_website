@@ -11,10 +11,12 @@ class ProjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     double pagePadding = screenWidth > 1080 ? 160 : screenWidth > 670 ? 100 : 50;
 
-    return SizedBox(
+    return Container(
       width: double.maxFinite,
+      constraints: BoxConstraints(minHeight: screenHeight),
       child: Stack(
         children: [
           Padding(
@@ -30,7 +32,7 @@ class ProjectsPage extends StatelessWidget {
                   dividerFlex: 0.6,
                 ),
                 const SizedBox(height: 50),
-                const ProjectsList()
+                const ProjectsList(type: "important")
               ],
             ),
           ),

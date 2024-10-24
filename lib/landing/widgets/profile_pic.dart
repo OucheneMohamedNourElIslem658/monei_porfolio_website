@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -80,30 +81,7 @@ class _ProfilePicState extends State<ProfilePic> {
                   ],
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: CustomColors.grey1
-                  ),
-                  color: CustomColors.blue1
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      height: 16,
-                      width: 16,
-                      color: CustomColors.purple1,
-                    ),
-                    const SizedBox(width: 8),
-                    const Expanded(
-                      child: FutureInsightsText()
-                    )
-                  ],
-                ),
-              ).animate()
-               .then(delay: 400.milliseconds)
-               .fade(duration: const Duration(milliseconds: 400))
+              const FutureInsightsText()
             ],
           ),
       ),
@@ -119,52 +97,61 @@ class DescritionText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final skills = [
-      'Computer Sience Student',
-      'Cross Platform Developer',
-      'Web Services Developer'
-    ];
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Monei is an experianced",
-          style: TextStyles.style4
-        ).animate().fade().move(),
-        SizedBox(
-          height: screenSize.width > 670 ? 80 : 100,
-          child: AnimatedTextKit(
-            repeatForever: true,
-            animatedTexts: List.generate(
-              skills.length, 
-              (index) => TyperAnimatedText(
-                skills[index],
-                textStyle: TextStyles.style4.copyWith(
-                  color: CustomColors.purple1,
-                )
-              )
+    return StreamBuilder<DocumentSnapshot>(
+      stream: FirebaseFirestore.instance.collection("suplimentary info").doc("landing page").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+          return const SizedBox();
+        }
+
+        final info = snapshot.data!.data() as Map<String, dynamic>;
+        String introText = info["intro text"] ?? "";
+        List<dynamic> skills = info["skills"] ?? [];
+        String description = info["description"] ?? "";
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              introText,
+              style: TextStyles.style4
+            ).animate().fade().move(),
+            SizedBox(
+              height: screenSize.width > 670 ? 80 : 100,
+              child: AnimatedTextKit(
+                repeatForever: true,
+                animatedTexts: List.generate(
+                  skills.length, 
+                  (index) => TyperAnimatedText(
+                    skills[index],
+                    textStyle: TextStyles.style4.copyWith(
+                      color: CustomColors.purple1,
+                    )
+                  )
+                ),
+              ).animate().then(delay: 200.milliseconds).fade().move(),
             ),
-          ).animate().then(delay: 200.milliseconds).fade().move(),
-        ),
-        const SizedBox(height: 0),
-        ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 530),
-          child: Text(
-            "He uses the newest and the most evolved tech stacks to build beautiful and complex softwares",
-            style: TextStyles.style3.copyWith(
-              color: CustomColors.grey1
-            )
-          ).animate().then(delay: 400.milliseconds).fade().move(),
-        ),
-        const SizedBox(height: 30),
-        OutlinedButton(
-          onPressed: (){}, 
-          child: const Text(
-            "Contact me !!",
-            style: TextStyles.style2,
-          )
-        ).animate().then(delay: 400.milliseconds).fade().move(),
-      ],
+            const SizedBox(height: 0),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 530),
+              child: Text(
+                description,
+                style: TextStyles.style3.copyWith(
+                  color: CustomColors.grey1
+                )
+              ).animate().then(delay: 400.milliseconds).fade().move(),
+            ),
+            const SizedBox(height: 30),
+            OutlinedButton(
+              onPressed: () async {}, 
+              child: const Text(
+                "Contact me !!",
+                style: TextStyles.style2,
+              )
+            ).animate().then(delay: 400.milliseconds).fade().move(),
+          ],
+        );
+      }
     );
   }
 }

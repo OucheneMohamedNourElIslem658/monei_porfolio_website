@@ -1,4 +1,5 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -56,7 +57,7 @@ class _LandingPageMedium extends StatelessWidget {
                 ),
                 SizedBox(height: 70),
                 Align(
-                  alignment: const Alignment(0.3, 0),
+                  alignment: Alignment(0.3, 0),
                   child: Quote()
                 )
               ],
@@ -95,69 +96,81 @@ class _QuoteState extends State<Quote> {
           });
         }
       },
-      child: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+      child: StreamBuilder<DocumentSnapshot>(
+        stream: FirebaseFirestore.instance.collection("suplimentary info").doc("landing page").snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+            return const SizedBox();
+          }
+
+          final info = snapshot.data!.data() as Map<String, dynamic>;
+          String quote = info["quote"];
+          String quoter = info["quoter"];
+          return Stack(
             children: [
-              const SizedBox(height: 14),
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: CustomColors.grey1
-                  )
-                ),
-                child: AnimatedTextKitWithTarget(
-                  animateText: target == 1,
-                  animatedTextKit: AnimatedTextKit(
-                    totalRepeatCount: 1,
-                    animatedTexts: [
-                      TyperAnimatedText(
-                        "With great power comes great electricity bill",
-                        speed: 20.milliseconds,
-                        textStyle: TextStyles.style2
-                      ),
-                    ]
-                  )
-                )
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: CustomColors.grey1
+                      )
+                    ),
+                    child: AnimatedTextKitWithTarget(
+                      animateText: target == 1,
+                      animatedTextKit: AnimatedTextKit(
+                        totalRepeatCount: 1,
+                        animatedTexts: [
+                          TyperAnimatedText(
+                            quote,
+                            speed: 20.milliseconds,
+                            textStyle: TextStyles.style2
+                          ),
+                        ]
+                      )
+                    )
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: CustomColors.grey1),
+                        left: BorderSide(color: CustomColors.grey1),
+                        right: BorderSide(color: CustomColors.grey1)
+                      )
+                    ),
+                    child: Text(
+                      quoter,
+                      style: TextStyles.style2,
+                    ),
+                  ),
+                ],
               ),
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: CustomColors.grey1),
-                    left: BorderSide(color: CustomColors.grey1),
-                    right: BorderSide(color: CustomColors.grey1)
-                  )
+              Positioned(
+                top: 0,
+                left: 10,
+                child: Container(
+                  color: CustomColors.blue1,
+                  padding: const EdgeInsets.all(4),
+                  child: SvgPicture.asset('assets/icons/double_comma.svg'),
                 ),
-                child: const Text(
-                  "- Dr. Who",
-                  style: TextStyles.style2,
+              ),
+              Positioned(
+                bottom: 35,
+                right: 10,
+                child: Container(
+                  color: CustomColors.blue1,
+                  padding: const EdgeInsets.all(4),
+                  child: SvgPicture.asset('assets/icons/double_comma.svg'),
                 ),
               ),
             ],
-          ),
-          Positioned(
-            top: 0,
-            left: 10,
-            child: Container(
-              color: CustomColors.blue1,
-              padding: const EdgeInsets.all(4),
-              child: SvgPicture.asset('assets/icons/double_comma.svg'),
-            ),
-          ),
-          Positioned(
-            bottom: 35,
-            right: 10,
-            child: Container(
-              color: CustomColors.blue1,
-              padding: const EdgeInsets.all(4),
-              child: SvgPicture.asset('assets/icons/double_comma.svg'),
-            ),
-          ),
-        ],
-      ).animate(target: target).fade(),
+          ).animate(target: target).fade();
+        }
+      ),
     );
   }
 }

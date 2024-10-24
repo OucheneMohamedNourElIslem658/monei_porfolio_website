@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 
 import '../../commun/constents/animations.dart';
 import '../../commun/controllers/custom_scroll.dart';
@@ -14,6 +15,7 @@ import '/projects/widgets/title.dart';
 import '/commun/widgets/contacts_side_bar.dart';
 import '/commun/widgets/custom_app_bar.dart';
 import '/commun/widgets/footer.dart';
+
 
 class AboutMeScreen extends GetView<LandingScrollController> {
   const AboutMeScreen({super.key});
@@ -140,11 +142,18 @@ class AboutMeScreen extends GetView<LandingScrollController> {
   }
 }
 
-class MyFunFacts extends StatelessWidget {
+class MyFunFacts extends StatefulWidget {
   const MyFunFacts({super.key});
 
   @override
+  State<MyFunFacts> createState() => _MyFunFactsState();
+}
+
+class _MyFunFactsState extends State<MyFunFacts> {
+  double target = 0;
+  @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     final funFacts = [
       'Summer is the worst!',
       'My fvorite serie is House of The Dragon',
@@ -154,13 +163,25 @@ class MyFunFacts extends StatelessWidget {
       'My favourite color is Green',
       'My biggest motivation is my ditermination'
     ];
-    return Wrap(
-      spacing: 15,
-      runSpacing: 15,
-      children: List.generate(
-        funFacts.length, 
-        (index) => FunFactItem(quote: funFacts[index])
-      ),
+    return VisibilityDetector(
+      key: GlobalKey(),
+      onVisibilityChanged: (info) {
+        final animateWidget = (info.visibleFraction > 0.5 && target == 0 || info.visibleFraction * info.size.height > screenSize.height/2) && target == 0;
+        if (animateWidget) {
+          setState(() {
+            target = 1;
+          });
+        }
+      },
+      child: Wrap(
+        spacing: 15,
+        runSpacing: 15,
+        children: List.generate(
+          funFacts.length, 
+          (index) => FunFactItem(quote: funFacts[index])
+        ).animate(
+          interval: const Duration(milliseconds: 100)).move().fade()
+      ).animate(target: target).fade(duration: Duration.zero),
     );
   }
 }
