@@ -99,7 +99,7 @@ class AboutMeScreen extends GetView<LandingScrollController> {
                           const Skills(size: SizeStatus.medium),
                           const SizedBox(height: 120),
                           const SectionTitle(
-                            title: 'my-fun-facts',
+                            title: 'testimonials',
                             leading: '#',
                           ),
                           const SizedBox(height: 20),

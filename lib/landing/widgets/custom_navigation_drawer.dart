@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import '/commun/widgets/vertical_scroller.dart';
 import '../../commun/controllers/custom_scroll.dart';
 import '/commun/widgets/contact_buttons.dart';
-import '/landing/widgets/languages_dropdown.dart';
 import '/landing/widgets/logo.dart';
 import '/landing/widgets/navigation_button.dart';
 
@@ -44,12 +43,12 @@ class CustomNavigationDrawer extends StatelessWidget {
               padding: EdgeInsets.only(left: 30),
               child: DrawerNavigationButtons(),
             ),
-            const Padding(
-              padding: EdgeInsets.only(left: 30),
-              child: LanguagesDropdown(
-                size: 32,
-              ),
-            ),
+            // const Padding(
+            //   padding: EdgeInsets.only(left: 30),
+            //   child: LanguagesDropdown(
+            //     size: 32,
+            //   ),
+            // ),
             const SizedBox(height: 20),
             const Spacer(),
             const Center(

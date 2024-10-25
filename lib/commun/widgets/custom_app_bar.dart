@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '/commun/constents/colors.dart';
-import '/landing/widgets/languages_dropdown.dart';
 import '/landing/widgets/logo.dart';
 import '/landing/widgets/navigation_bar.dart';
 
@@ -25,7 +24,7 @@ class CustomAppBar extends StatelessWidget {
         shadowColor: CustomColors.blue1,
         scrolledUnderElevation: 0.001,
         flexibleSpace: Padding(
-          padding: const EdgeInsets.only(top: 10),
+          padding: const EdgeInsets.only(top: 20),
           child: Row(
             children: [
               const SizedBox(width: 30),
@@ -55,13 +54,13 @@ class CustomAppBar extends StatelessWidget {
       shadowColor: CustomColors.blue1,
       scrolledUnderElevation: 0.001,
       flexibleSpace: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 160),
+        padding: const EdgeInsets.symmetric(horizontal: 160, vertical: 20),
         child: Row(
           children: [
             const Logo(),
             const Spacer(flex: 4),
             if (showSectionsButtons) const CustomNavigationBar(),
-            const LanguagesDropdown(),
+            // const LanguagesDropdown(),
           ],
         ),
       ),

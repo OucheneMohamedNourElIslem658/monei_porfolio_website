@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:monei_portfolio/firebase_options.dart';
 import 'package:monei_portfolio/landing/screens/landing.dart';
 
+import '/firebase_options.dart';
 import '/commun/controllers/custom_scroll.dart';
 import '/commun/utils/theme.dart';
 import '/landing/controllers/translations.dart';
