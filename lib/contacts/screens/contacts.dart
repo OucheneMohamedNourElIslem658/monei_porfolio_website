@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
@@ -57,10 +58,21 @@ class ContactsScreen extends GetView<LandingScrollController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SectionTitle(
-                          title: 'Contacts',
-                          subTitle: 'How you can reach me?',
-                          titleFontWeight: FontWeight.w700,
+                        StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance.collection("suplimentary info").doc("contact").snapshots(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting || snapshot.data == null) {
+                              return const SizedBox();
+                            }
+
+                            final data = snapshot.data!.data() as Map<String, dynamic>;
+                            String contactQuestion = data["contact question"];
+                            return SectionTitle(
+                              title: 'Contacts',
+                              subTitle: contactQuestion,
+                              titleFontWeight: FontWeight.w700,
+                            );
+                          }
                         ),
                         const SizedBox(height: 50),
                         ContactsContent(status: screenWidth > 1080 ? SizeStatus.large : SizeStatus.medium, showForm: true,),

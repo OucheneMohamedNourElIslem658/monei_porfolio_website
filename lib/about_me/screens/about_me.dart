@@ -2,13 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:visibility_detector/visibility_detector.dart';
 
+import '/about_me/widgets/testmonials.dart';
 import '../../commun/constents/animations.dart';
 import '../../commun/controllers/custom_scroll.dart';
-import '/commun/constents/colors.dart';
 import '/commun/constents/size_status.dart';
-import '/commun/constents/text_styles.dart';
 import '/commun/widgets/about_me_content.dart';
 import '/commun/widgets/skills.dart';
 import '/projects/widgets/title.dart';
@@ -113,7 +111,7 @@ class AboutMeScreen extends GetView<LandingScrollController> {
                               ),
                               ConstrainedBox(
                                 constraints: BoxConstraints(maxWidth: screenWidth > 670 ? 750 : double.maxFinite),
-                                child: const MyFunFacts()
+                                child: const Testimonials()
                               ),
                             ],
                           ),
@@ -137,73 +135,6 @@ class AboutMeScreen extends GetView<LandingScrollController> {
             }
           ),
         ],
-      ),
-    );
-  }
-}
-
-class MyFunFacts extends StatefulWidget {
-  const MyFunFacts({super.key});
-
-  @override
-  State<MyFunFacts> createState() => _MyFunFactsState();
-}
-
-class _MyFunFactsState extends State<MyFunFacts> {
-  double target = 0;
-  @override
-  Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
-    final funFacts = [
-      'Summer is the worst!',
-      'My fvorite serie is House of The Dragon',
-      'I am still a student',
-      'I quitted sport for while now',
-      'Selfish people are the worst!',
-      'My favourite color is Green',
-      'My biggest motivation is my ditermination'
-    ];
-    return VisibilityDetector(
-      key: GlobalKey(),
-      onVisibilityChanged: (info) {
-        final animateWidget = (info.visibleFraction > 0.5 && target == 0 || info.visibleFraction * info.size.height > screenSize.height/2) && target == 0;
-        if (animateWidget) {
-          setState(() {
-            target = 1;
-          });
-        }
-      },
-      child: Wrap(
-        spacing: 15,
-        runSpacing: 15,
-        children: List.generate(
-          funFacts.length, 
-          (index) => FunFactItem(quote: funFacts[index])
-        ).animate(
-          interval: const Duration(milliseconds: 100)).move().fade()
-      ).animate(target: target).fade(duration: Duration.zero),
-    );
-  }
-}
-
-class FunFactItem extends StatelessWidget {
-  const FunFactItem({super.key, required this.quote});
-
-  final String quote;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        border: Border.all(color: CustomColors.grey1),
-        color: CustomColors.blue1
-      ),
-      child: Text(
-        quote,
-        style: TextStyles.style3.copyWith(
-          color: CustomColors.grey1
-        ),
       ),
     );
   }

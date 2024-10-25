@@ -49,7 +49,7 @@ class FutureInsightsText extends StatelessWidget {
                         )
                       ),
                       TextSpan(
-                        text: "$profileSentenceTrailing   ",
+                        text: profileSentenceTrailing,
                         style: TextStyles.style2
                       )
                     ]

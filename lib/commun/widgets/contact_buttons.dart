@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:monei_portfolio/commun/constents/text_styles.dart';
-import 'package:monei_portfolio/commun/widgets/contact_button.dart';
+
+import '/commun/constents/text_styles.dart';
+import '/commun/widgets/contacts_card.dart';
 
 class ContactButtons extends StatelessWidget {
   const ContactButtons({
@@ -28,22 +29,25 @@ class ContactButtons extends StatelessWidget {
         Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            ContactButton(
+            ContactTile(
               iconPath: "assets/icons/github.svg",
+              title: "github",
               size: buttonSize,
-              onPressed: (){},
+              showTitle: false,
             ),
             SizedBox(width: spacing ?? 45),
-            ContactButton(
+            ContactTile(
               iconPath: "assets/icons/linkedin.svg",
+              title: "linkedin",
+              showTitle: false,
               size: buttonSize,
-              onPressed: (){},
             ),
             SizedBox(width: spacing ?? 45),
-            ContactButton(
+            ContactTile(
               iconPath: "assets/icons/gmail.svg",
+              title: "gmail",
               size: buttonSize,
-              onPressed: (){},
+              showTitle: false,
             ),
           ],
         ),

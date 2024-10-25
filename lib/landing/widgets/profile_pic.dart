@@ -30,7 +30,8 @@ class _ProfilePicState extends State<ProfilePic> {
           });
         }
       },
-      child: IntrinsicWidth(
+      child: SizedBox(
+        width: 460,
         child: Column(
           children: [
             SizedBox(

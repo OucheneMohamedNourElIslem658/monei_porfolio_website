@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '/landing/widgets/personal_info.dart';
 import '/commun/constents/colors.dart';
-import '/commun/constents/text_styles.dart';
 import 'contact_buttons.dart';
 
 class Footer extends StatelessWidget {
@@ -68,14 +67,7 @@ class _FooterMedium extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Center(
-                  child: Text(
-                    "© Copyright 2022. Made by Elias",
-                    style: TextStyles.style3.copyWith(
-                      color: CustomColors.grey1
-                    ),
-                  ),
-                )
+                const CopyRightInfo()
               ],
             ),
           ),
@@ -102,12 +94,12 @@ class _FooterLarge extends StatelessWidget {
             color: CustomColors.grey1,
           ),
           const SizedBox(height: 30),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 160),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 160),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Row(
+                Row(
                   children: [
                     Expanded(
                       child: PersonalInfo(),
@@ -119,13 +111,8 @@ class _FooterLarge extends StatelessWidget {
                     )
                   ],
                 ),
-                const SizedBox(height: 20),
-                Text(
-                  "© Copyright 2022. Made by Elias",
-                  style: TextStyles.style3.copyWith(
-                    color: CustomColors.grey1
-                  ),
-                )
+                SizedBox(height: 20),
+                CopyRightInfo()
               ],
             ),
           ),

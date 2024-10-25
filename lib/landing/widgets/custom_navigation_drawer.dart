@@ -53,7 +53,7 @@ class CustomNavigationDrawer extends StatelessWidget {
             const SizedBox(height: 20),
             const Spacer(),
             const Center(
-              child: ContactButtons(),
+              child: ContactButtons(buttonSize: 42,),
             ),
             const SizedBox(height: 60)
           ],

@@ -29,7 +29,7 @@ class SupportCard extends StatelessWidget {
           const SizedBox(height: 20),
           const ContactTile(
             iconPath: 'assets/icons/card.svg', 
-            title: '4149500120690030'
+            title: 'card'
           )
         ],
       ),

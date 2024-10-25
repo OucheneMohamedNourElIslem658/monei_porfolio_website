@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:monei_portfolio/commun/constents/colors.dart';
 
-import 'contact_button.dart';
+import '/commun/constents/colors.dart';
+import '/commun/widgets/contacts_card.dart';
 
 class ContactButtonsSideBar extends StatelessWidget {
   const ContactButtonsSideBar({
@@ -19,22 +19,25 @@ class ContactButtonsSideBar extends StatelessWidget {
           color: CustomColors.grey1,
         ),
         const SizedBox(height: 18),
-        ContactButton(
+        const ContactTile(
           iconPath: "assets/icons/github.svg",
+          title: "github",
           size: 20,
-          onPressed: (){},
+          showTitle: false,
         ),
         const SizedBox(height: 18),
-        ContactButton(
+        const ContactTile(
           iconPath: "assets/icons/linkedin.svg",
+          title: "linkedin",
+          showTitle: false,
           size: 20,
-          onPressed: (){},
         ),
         const SizedBox(height: 18),
-        ContactButton(
+        const ContactTile(
           iconPath: "assets/icons/gmail.svg",
+          title: "gmail",
           size: 20,
-          onPressed: (){},
+          showTitle: false,
         ),
       ],
     );
