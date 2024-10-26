@@ -1,6 +1,6 @@
 # monei_portfolio
 
-A new Flutter project.
+My 2nd flutter postfolio website
 
 ## Getting Started
 
