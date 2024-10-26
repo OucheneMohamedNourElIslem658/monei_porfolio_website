@@ -47,30 +47,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDEWsGeP7fKPb-eF3aZRmeaewT4WSgijbE',
-    appId: '1:711706986241:web:c81813caa1d261a5f3fd00',
-    messagingSenderId: '711706986241',
-    projectId: 'ouchenemohamednourelislem',
-    authDomain: 'ouchenemohamednourelislem.firebaseapp.com',
-    storageBucket: 'ouchenemohamednourelislem.appspot.com',
-    measurementId: 'G-4LZVPWXQVX',
-  );
-
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDOHYXquBdb56_Zbm3vLvo-5Og3wtuNaMc',
-    appId: '1:711706986241:android:ce2d438887a97175f3fd00',
-    messagingSenderId: '711706986241',
-    projectId: 'ouchenemohamednourelislem',
-    storageBucket: 'ouchenemohamednourelislem.appspot.com',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDEWsGeP7fKPb-eF3aZRmeaewT4WSgijbE',
-    appId: '1:711706986241:web:cc3694249c3e1e25f3fd00',
-    messagingSenderId: '711706986241',
-    projectId: 'ouchenemohamednourelislem',
-    authDomain: 'ouchenemohamednourelislem.firebaseapp.com',
-    storageBucket: 'ouchenemohamednourelislem.appspot.com',
-    measurementId: 'G-7LCBVX7NYC',
+    apiKey: '...',
+    appId: '...',
+    messagingSenderId: '...',
+    projectId: '...',
+    authDomain: '...',
+    storageBucket: '...',
+    measurementId: '...',
   );
 }
